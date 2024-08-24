@@ -33,7 +33,7 @@ export function MenuDragger(containerRef, data) {
         e.dataTransfer.dropEffect = "none";
     }
     const drop = (e) => {
-        // 松手释放元素
+        // 松手释放元素, 获取位置, 并且增加当前组件到容器中
         let blocks = data.value.blocks;
         data.value = {
             ...data.value, blocks: [

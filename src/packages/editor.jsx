@@ -3,6 +3,8 @@ import './editor.scss'
 import editorBlock from "./editor-block";
 import deepcopy from "deepcopy";
 import { MenuDragger } from "./MenuDragger";
+import { Focus } from "./Focus";
+import BlockDragger from "./BlockDragger";
 export default defineComponent({
     props: {
         modelValue: { type: Object }
@@ -22,37 +24,21 @@ export default defineComponent({
             height: data.value.container.height + '%'
         }))
         const config = inject('register'); // 获取全局注册的元素数据
-        console.log("config", config);
-
         const containerRef = ref(null) // 容器ref
 
-        // 拖拽事件
+        // 实现拖拽功能, 定义的拖拽开始事件和拖拽结束事件
         const { dragStart, dragEnd } = MenuDragger(containerRef, data);
 
-        // 获取焦点事件
-        const blockMouseDown = (e, block) => {
-            // 在block上添加一个属性, 表示当前元素被选中
-            e.preventDefault()
-            e.stopPropagation()
-            if (e.shiftKey) {
-                block.focus = !block.focus; // 如果按住shift键, 则切换当前元素选中状态
-            } else {
-                if (!block.focus) {
-                    clearblockFocus()
-                    block.focus = true; // 设置当前元素被选中, 清空其他元素
-                } else {
-                    block.focus = false
-                }
-            }
-        }
-        const clearblockFocus = () => {
-            data.value.blocks.forEach(block => {
-                block.focus = false
-            })
-        }
+        // 获取焦点事件, 选中以后就可以进行拖拽多个元素
+        const { blockMouseDown, containerMousedown, focusData } = Focus(data, (e) => {
+            // 获取焦点后进行拖拽
+            mousedown(e)
+        });
+
+        // 对获取焦点的元素进行拖拽
+        const { mousedown } = BlockDragger(focusData)
 
 
-        // 实现拖拽多个元素
         return () =>
             <div class='editor'>
                 <div class='editor_left'>
@@ -72,7 +58,12 @@ export default defineComponent({
 
                 <div class='editor_container'>
                     <div class='editor_container_canvas'>
-                        <div class='editor_container_canvas_content' style={containerStyle.value} ref={containerRef}>
+                        <div
+                            class='editor_container_canvas_content'
+                            style={containerStyle.value}
+                            ref={containerRef}
+                            onMousedown={containerMousedown}
+                        >
                             {
                                 (data.value.blocks.map(block => (
                                     <editorBlock
