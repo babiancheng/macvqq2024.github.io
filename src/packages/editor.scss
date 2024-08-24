@@ -1,0 +1,108 @@
+.editor {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    &_left,
+    &_right {
+        position: absolute;
+        width: 20%;
+        height: 98vh;
+        background: rgb(234, 206, 206);
+        top: 0;
+        bottom: 0;
+    }
+
+    &_left {
+        left: 0;
+
+        &_item {
+            width: 75%;
+            height: 10vh;
+            margin: 0 auto;
+            margin-top: 2vh;
+            padding: 15px;
+            background: rgb(233, 233, 238);
+            box-sizing: border-box;
+            font-size: 15px;
+            cursor: move;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+            >span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: rgb(145, 122, 246);
+                color: #fff;
+            }
+
+            // 添加一个遮罩层
+            &::after {
+                content: ' ';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: #ccc;
+                opacity: 0.2;
+            }
+
+        }
+    }
+
+    &_right {
+        right: 0;
+    }
+
+    &_top {
+        position: absolute;
+        right: 21%;
+        left: 21%;
+        top: 0;
+        height: 10vh;
+        background: rgb(138, 138, 214)
+    }
+
+    &_container {
+        position: absolute;
+        right: 21%;
+        left: 21%;
+        top: 11vh;
+        height: 87vh;
+        bottom: 0;
+        background: rgb(196, 219, 196);
+
+        &_canvas {
+            overflow: scroll;
+            height: 100%;
+
+            &_content {
+                margin: 0 auto;
+                position: relative;
+            }
+        }
+    }
+}
+
+.editor-block {
+    position: absolute;
+    &::after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.editor_block_focus {
+    &::after {
+        border: 2px dashed red;
+    }
+}
