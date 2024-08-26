@@ -5,6 +5,7 @@ import deepcopy from "deepcopy";
 import { MenuDragger } from "./MenuDragger";
 import { Focus } from "./Focus";
 import BlockDragger from "./BlockDragger";
+import { useCommand } from "./useCommand";
 export default defineComponent({
     props: {
         modelValue: { type: Object }
@@ -19,6 +20,7 @@ export default defineComponent({
                 ctx.emit("update:modelValue", deepcopy(newValue))
             }
         })
+
         
         const containerStyle = computed(() => ({
             width: data.value.container.width + "%",
@@ -39,11 +41,23 @@ export default defineComponent({
         // 对获取焦点的元素进行拖拽
         const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock, data)
 
+        const { commands } = useCommand(data)
+        console.log(commands);
+
+
+        let buttons = [
+            { label: '撤销', icon: 'icon-back', handler: () => { commands.undo() } },
+            { label: '重做', icon: 'icon-foward', handler: () => { commands.redo() } },
+        ]
+
+
+
+
         return () =>
             <div class='editor'>
                 <div class='editor_left'>
                     {/* 根据注册列表, 渲染对应内容, 可以实现拖拽 */}
-                    
+
                     {config.componentList.map(component => (
                         <el-tooltip
                             class="box-item"
@@ -61,7 +75,15 @@ export default defineComponent({
                         </el-tooltip>
                     ))}
                 </div>
-                <div class='editor_top'>顶部菜单栏</div>
+                <div class='editor_top'>
+
+                    {buttons.map(item => {
+                        return <div className="editor_top_button" onClick={item.handler}>
+                            <i className={item.icon}></i>
+                            <button className="editor_top_button_text">{item.label}</button>
+                        </div>
+                    })}
+                </div>
 
                 <div class='editor_container'>
                     <div class='editor_container_canvas'>

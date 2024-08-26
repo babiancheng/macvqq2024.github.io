@@ -1,3 +1,5 @@
+import { events } from "./events"
+
 export function MenuDragger(containerRef, data) {
     let currentComponent = null // 当前拖拽的组件
     // 拖拽事件
@@ -12,6 +14,7 @@ export function MenuDragger(containerRef, data) {
         containerRef.value.addEventListener("drop", drop)
         currentComponent = component
         console.log("", currentComponent)
+        events.emit('srart') // 发布start
     }
 
     const dragEnd = (e) => {
@@ -19,6 +22,7 @@ export function MenuDragger(containerRef, data) {
         containerRef.value.removeEventListener('dragover', dragOver)
         containerRef.value.removeEventListener("dragleave", dragLeave)
         containerRef.value.removeEventListener("drop", drop)
+        events.emit('end') // 发布end
     }
     const dragEnter = (e) => {
         // 移入容器中改变样式, H5的拖动图标
