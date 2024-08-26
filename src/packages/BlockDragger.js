@@ -1,6 +1,6 @@
 import { reactive } from "vue"
 
-export default function BlockDragger(focusData, lastSelectBlock) {
+export default function BlockDragger(focusData, lastSelectBlock, data) {
     let dragState = {
         startX: 0,
         startY: 0
@@ -24,7 +24,12 @@ export default function BlockDragger(focusData, lastSelectBlock) {
             lines: (() => {
                 const { unfocus } = focusData.value
                 let lines = { x: [], y: [] }; // 计算横线的位置使用y存放, x存放纵线
-                unfocus.forEach((block) => {
+                [...unfocus, {
+                    top:0,
+                    left:0,
+                    width: data.value.container.width+"%",
+                    height: data.value.container.height+"%",
+                }].forEach((block) => {
                     const { top: Atop, left: Aleft, width: Awidth, height: Aheight } = block;
                     lines.y.push({ showTop: Atop, top: Atop }); // 上线
                     lines.y.push({ showTop: Atop, top: Atop - Bheight }); // 底对顶
@@ -92,6 +97,8 @@ export default function BlockDragger(focusData, lastSelectBlock) {
     const mouseup = (e) => {
         document.removeEventListener('mousemove', mousemove);
         document.removeEventListener('mouseup', mouseup);
+        markline.x = null;
+        markline.y = null;
     }
     return {
         mousedown,

@@ -37,7 +37,7 @@ export default defineComponent({
         });
 
         // 对获取焦点的元素进行拖拽
-        const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock)
+        const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock, data)
 
         return () =>
             <div class='editor'>
