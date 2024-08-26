@@ -1,7 +1,7 @@
 import deepcopy from "deepcopy";
 import { events } from "./events";
 import { onUnmounted } from "vue";
-
+// 4444
 export function useCommand(data) {
     const state = { // 前进后退需要索引值
         current: -1, // 前进后退的索引值
