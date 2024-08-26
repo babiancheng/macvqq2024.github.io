@@ -21,6 +21,9 @@ export default defineComponent({
                 props.block.top = props.block.top - offsetHeight / 2;
                 props.block.alignCenter = false; //让渲染后的结果才能去居中
             }
+            // 设置组件的宽高
+            props.block.width = offsetWidth;
+            props.block.height = offsetHeight;
         })
         return ()=>{
             // 通过key获取组件

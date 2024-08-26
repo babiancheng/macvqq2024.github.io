@@ -56,7 +56,7 @@
         left: 21%;
         top: 0;
         height: 10vh;
-        background: rgb(138, 138, 214)
+        background: rgb(221, 221, 255)
     }
 
     &_container {
@@ -66,7 +66,7 @@
         top: 11vh;
         height: 87vh;
         bottom: 0;
-        background: rgb(196, 219, 196);
+        background: rgb(233, 255, 233);
 
         &_canvas {
             overflow: scroll;
@@ -94,6 +94,19 @@
 
 .editor_block_focus {
     &::after {
-        border: 2px dashed red;
+        border: 2px dashed rgb(255, 0, 221);
     }
+}
+.line_x{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed rgb(21, 0, 255);
+}
+.line_y{
+    // width: 100px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed rgb(0, 34, 255);
 }

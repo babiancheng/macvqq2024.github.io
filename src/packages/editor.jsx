@@ -1,6 +1,6 @@
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import './editor.scss'
-import editorBlock from "./editor-block";
+import editorBlock from "./editor-block"; // 引入组件
 import deepcopy from "deepcopy";
 import { MenuDragger } from "./MenuDragger";
 import { Focus } from "./Focus";
@@ -20,7 +20,6 @@ export default defineComponent({
             }
         })
         
-    const typeList = ["基本组件", "列表组件", "表单组件", "布局组件", "业务组件"]
         const containerStyle = computed(() => ({
             width: data.value.container.width + "%",
             height: data.value.container.height + '%'
@@ -32,13 +31,13 @@ export default defineComponent({
         const { dragStart, dragEnd } = MenuDragger(containerRef, data);
 
         // 获取焦点事件, 选中以后就可以进行拖拽多个元素
-        const { blockMouseDown, containerMousedown, focusData } = Focus(data, (e) => {
+        const { blockMouseDown, containerMousedown, focusData, lastSelectBlock } = Focus(data, (e) => {
             // 获取焦点后进行拖拽
             mousedown(e)
         });
 
         // 对获取焦点的元素进行拖拽
-        const { mousedown } = BlockDragger(focusData)
+        const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock)
 
         return () =>
             <div class='editor'>
@@ -73,15 +72,18 @@ export default defineComponent({
                             onMousedown={containerMousedown}
                         >
                             {
-                                (data.value.blocks.map(block => (
+                                (data.value.blocks.map((block, index) => (
                                     <editorBlock
                                         block={block}
                                         class={block.focus ? "editor_block_focus" : ""}
-                                        onMousedown={(e) => blockMouseDown(e, block)}
+                                        onMousedown={(e) => blockMouseDown(e, block, index)}
                                     ></editorBlock>
                                 )))
                             }
+                            {markline.x !== null && <div class="line_x" style={{left: markline.x + "px"}}></div>}
+                            {markline.y !== null && <div class="line_y" style={{top: markline.y + "px"}}></div>}
                         </div>
+                        
                     </div>
                 </div>
 
