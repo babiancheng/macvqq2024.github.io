@@ -7,7 +7,7 @@
     &_right {
         position: absolute;
         width: 20%;
-        height: 98vh;
+        // height: 100vh;
         background: rgb(234, 206, 206);
         top: 0;
         bottom: 0;
@@ -15,32 +15,23 @@
 
     &_left {
         left: 0;
-
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
         &_item {
-            width: 75%;
-            height: 10vh;
-            margin: 0 auto;
-            margin-top: 2vh;
-            padding: 15px;
-            background: rgb(233, 233, 238);
+            width: 40%;
+            height: 7vh;
+            margin-bottom: 2vh;
+            padding: 10px;
             box-sizing: border-box;
-            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
             cursor: move;
             user-select: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-
-            >span {
-                position: absolute;
-                top: 0;
-                left: 0;
-                background-color: rgb(145, 122, 246);
-                color: #fff;
-            }
-
-            // 添加一个遮罩层
             &::after {
                 content: ' ';
                 position: absolute;

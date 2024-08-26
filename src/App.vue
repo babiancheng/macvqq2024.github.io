@@ -9,7 +9,7 @@
 import { provide, ref } from 'vue'
 import data from './data.json'
 import Editor from './packages/editor'
-import {registerConfig } from './utils/editor-config'
+import { registerConfig } from './utils/editor-config'
 
 const state = ref(data)
 provide('register', registerConfig) // 注册全局配置

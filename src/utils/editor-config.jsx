@@ -37,4 +37,25 @@ registerConfig.register({
     key: "input"
 });
 
+registerConfig.register({
+    label: "单选框",
+    preview:()=><el-radio value="1" size="large">Option 1</el-radio>,
+    render:()=><el-radio value="1" size="large">Option 1</el-radio>,
+    key: "radio"
+});
+
+registerConfig.register({
+    label: "复选框",
+    preview:()=><el-checkbox value="1" size="large">Option 1</el-checkbox>,
+    render:()=><el-checkbox value="1" size="large">Option 1</el-checkbox>,
+    key: "checkbox"
+})
+
+registerConfig.register({
+    label: "开关",
+    preview:()=><el-switch />,
+    render:()=><el-switch />,
+    key: "switch"
+})
+
 export {registerConfig}

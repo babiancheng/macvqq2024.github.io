@@ -19,6 +19,8 @@ export default defineComponent({
                 ctx.emit("update:modelValue", deepcopy(newValue))
             }
         })
+        
+    const typeList = ["基本组件", "列表组件", "表单组件", "布局组件", "业务组件"]
         const containerStyle = computed(() => ({
             width: data.value.container.width + "%",
             height: data.value.container.height + '%'
@@ -38,20 +40,26 @@ export default defineComponent({
         // 对获取焦点的元素进行拖拽
         const { mousedown } = BlockDragger(focusData)
 
-
         return () =>
             <div class='editor'>
                 <div class='editor_left'>
                     {/* 根据注册列表, 渲染对应内容, 可以实现拖拽 */}
+                    
                     {config.componentList.map(component => (
-                        <div class='editor_left_item'
-                            draggable={true} // 可移动
-                            onDragstart={(e) => dragStart(e, component)} // 拖拽开始
-                            onDragEnd={dragEnd} // 拖拽离开
+                        <el-tooltip
+                            class="box-item"
+                            effect="dark"
+                            content={component.label}
+                            placement="right"
                         >
-                            <span>{component.label}</span><br />
-                            <div>{component.preview()}</div>
-                        </div>
+                            <div class='editor_left_item'
+                                draggable={true} // 可移动
+                                onDragstart={(e) => dragStart(e, component)} // 拖拽开始
+                                onDragEnd={dragEnd} // 拖拽离开
+                            >
+                                <div>{component.preview()}</div>
+                            </div>
+                        </el-tooltip>
                     ))}
                 </div>
                 <div class='editor_top'>顶部菜单栏</div>
