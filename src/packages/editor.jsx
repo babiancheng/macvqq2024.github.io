@@ -43,8 +43,10 @@ export default defineComponent({
         const { commands } = useCommand(data)
 
         let buttons = [
-            { label: '撤销', render:()=><el-icon><Delete /></el-icon>, handler: () => { commands.undo() } },
-            { label: '重做', render:()=><el-icon><SemiSelect /></el-icon>, handler: () => { commands.redo() } },
+            { label: '撤销', render:()=><el-icon><Delete /></el-icon>, handler: () =>  commands.undo() },
+            { label: '重做', render:()=><el-icon><SemiSelect /></el-icon>, handler: () =>  commands.redo() },
+            { label: '导出', render:()=><el-icon><Upload /></el-icon>, handler: () =>  {console.log("导出")} },
+            { label: '导入', render:()=><el-icon><Download /></el-icon>, handler: () =>  {console.log("导入")} },
         ]
 
         return () =>

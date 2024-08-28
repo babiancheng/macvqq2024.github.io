@@ -59,6 +59,7 @@ export function useCommand(data) {
             return {
                 redo() {
                     console.log('撤销')
+                    console.log(state.queue);
                     if (state.current === -1) return; // 没有可撤销的
                     let item = state.queue[state.current] // 找到上一步还原
                     console.log(item)
@@ -73,7 +74,7 @@ export function useCommand(data) {
 
     registry({ // 如果希望将操作放到队列中可以增加一个属性 标识，等会操作要放到队列中
         name: 'drag',
-        pushQueue: false,
+        pushQueue: true,
         init() {// 初始化
             this.before = null
             // 监控拖拽开始事件，保存状态
