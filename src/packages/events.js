@@ -1,4 +1,5 @@
-import mitt from "mitt";
+import mitt from 'mitt';
 
+const eventBus = mitt();
 
-export const events = mitt(); // 导出一个发布订阅的对象
+export default eventBus; // 导出一个发布订阅的对象

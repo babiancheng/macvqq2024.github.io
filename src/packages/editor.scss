@@ -63,6 +63,19 @@
         justify-content: center;
         align-items: center;
         background: rgb(221, 221, 255);
+        &_button{
+            width: 70px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #ffc;
+            color: blue;
+            &+&{
+                margin-left: 3px
+            }
+        }
     }
 
     &_container {
@@ -105,23 +118,9 @@
     }
 }
 
-.editor_top_button {
-    width: 5%;
-    height: 10vh;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    margin-left: 3px;
-    cursor: pointer;
-}
-
 .editor_top_button_text {
     background: none;
     cursor: pointer;
-
-
 }
 
 .line_x {

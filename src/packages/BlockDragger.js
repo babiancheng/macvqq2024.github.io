@@ -44,7 +44,6 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
                     lines.x.push({ showLeft: Aleft, left: Aleft - Bwidth }); // 左对右
                 })
                 return lines;
-                // console.log("lines", lines);
             })()
         }
 
@@ -58,7 +57,7 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
         // 鼠标移动后 - 鼠标移动前 + left 
         let left = moveX - dragState.startX + dragState.startLeft
         let top = moveY - dragState.startY + dragState.startTop
-        console.log(dragState.lines.x)
+
         // 计算横线, 距离参照值多少像素时候, 进行显示指定的线
         let y = null
         let x = null
@@ -66,7 +65,6 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
             const { top: t, showTop: s } = dragState.lines.y[i] //获取每一条线
             if (Math.abs(t - top) < 5) { // 距离小于5像素, 显示
                 y = s //线要显示的位置
-                console.log("y", t, s,)
                 // 实现快速和元素贴在一起
                 moveY = dragState.startY - dragState.startTop + t //容器距离顶部的距离 + 目标的高度
                 break; // 找到就退出循环
@@ -83,7 +81,6 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
         }
         markline.x = x; // markline是响应式数据, x, y 更新, 页面就会更新
         markline.y = y;
-        console.log("多对多", x, y);
 
         let durX = moveX - dragState.startX; // 之前和之后的距离
         let durY = moveY - dragState.startY;

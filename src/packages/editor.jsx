@@ -21,7 +21,6 @@ export default defineComponent({
             }
         })
 
-        
         const containerStyle = computed(() => ({
             width: data.value.container.width + "%",
             height: data.value.container.height + '%'
@@ -42,16 +41,11 @@ export default defineComponent({
         const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock, data)
 
         const { commands } = useCommand(data)
-        console.log(commands);
-
 
         let buttons = [
-            { label: '撤销', icon: 'icon-back', handler: () => { commands.undo() } },
-            { label: '重做', icon: 'icon-foward', handler: () => { commands.redo() } },
+            { label: '撤销', render:()=><el-icon><Delete /></el-icon>, handler: () => { commands.undo() } },
+            { label: '重做', render:()=><el-icon><SemiSelect /></el-icon>, handler: () => { commands.redo() } },
         ]
-
-
-
 
         return () =>
             <div class='editor'>
@@ -66,8 +60,8 @@ export default defineComponent({
                             placement="right"
                         >
                             <div class='editor_left_item'
-                                draggable={true} // 可移动
-                                onDragstart={(e) => dragStart(e, component)} // 拖拽开始
+                                draggable
+                                onDragstart={e => dragStart(e, component)} // 拖拽开始
                                 onDragEnd={dragEnd} // 拖拽离开
                             >
                                 <div>{component.preview()}</div>
@@ -76,10 +70,12 @@ export default defineComponent({
                     ))}
                 </div>
                 <div class='editor_top'>
-
                     {buttons.map(item => {
+                        const RenderComponent = item.render();
                         return <div className="editor_top_button" onClick={item.handler}>
-                            <i className={item.icon}></i>
+                            <el-icon>
+                                {RenderComponent}
+                            </el-icon>
                             <button className="editor_top_button_text">{item.label}</button>
                         </div>
                     })}
@@ -102,10 +98,10 @@ export default defineComponent({
                                     ></editorBlock>
                                 )))
                             }
-                            {markline.x !== null && <div class="line_x" style={{left: markline.x + "px"}}></div>}
-                            {markline.y !== null && <div class="line_y" style={{top: markline.y + "px"}}></div>}
+                            {markline.x !== null && <div class="line_x" style={{ left: markline.x + "px" }}></div>}
+                            {markline.y !== null && <div class="line_y" style={{ top: markline.y + "px" }}></div>}
                         </div>
-                        
+
                     </div>
                 </div>
 
