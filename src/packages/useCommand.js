@@ -19,18 +19,17 @@ export function useCommand(data) {
                 return;
             }
 
-            let { queue, current } = state
+            let { queue, current } = state;
             // 如果放了组件1 > 组件2 > 撤回 > 组件3
             // 组件1 > 组件3
             if (queue.length > 0) {
                 // 可能在放置的过程中有撤回操作, 所以当前最新的current值来计算
-                queue = queue.splice(0, current + 1)
+                queue = queue.slice(0, current + 1)
                 state.queue = queue
             }
             queue.push({ redo, undo })// 保存指定的前进后退
             state.current = current + 1
-            console.log(state.queue);
-
+            console.log(queue);
         }
 
     }
@@ -44,7 +43,7 @@ export function useCommand(data) {
                     console.log("重做")
                     let item = state.queue[state.current + 1] //找到下一步还原
                     if (item) {
-                        item.redo && item.redo()
+                        item.redo && item.redo();
                         state.current++;
                     }
                 }
@@ -59,7 +58,6 @@ export function useCommand(data) {
             return {
                 redo() {
                     console.log('撤销')
-                    console.log(state.queue);
                     if (state.current === -1) return; // 没有可撤销的
                     let item = state.queue[state.current] // 找到上一步还原
                     console.log(item)
@@ -78,10 +76,14 @@ export function useCommand(data) {
         init() {// 初始化
             this.before = null
             // 监控拖拽开始事件，保存状态
-            const srart = () => this.before = deepcopy(data.value.blocks)
-
+            const srart = () => {
+                this.before = deepcopy(data.value.blocks)
+            }
+            
             // 拖拽之后需要触发对应的指令
-            const end = () => state.commands.drag()
+            const end = () => {
+                state.commands.drag()
+            }
 
             // 拖拽之前
             eventBus.on('start', srart)

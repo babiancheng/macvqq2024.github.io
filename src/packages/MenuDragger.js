@@ -4,6 +4,7 @@ export function MenuDragger(containerRef, data) {
     let currentComponent = null // 当前拖拽的组件
     // 拖拽事件
     const dragStart = (e, component) => {
+        eventBus.emit('srart') // 拖拽开始
         // dragenter进入元素中, 添加一个移动标识
         // dragover在元素中移动 必须阻止默认事件, 否则无法触发drop
         // dragleave 离开元素的时候 需要增加一个禁用标识
@@ -13,15 +14,16 @@ export function MenuDragger(containerRef, data) {
         containerRef.value.addEventListener("dragleave", dragLeave)
         containerRef.value.addEventListener("drop", drop)
         currentComponent = component
-        eventBus.emit('srart') // 发布start
+         // 发布start
     }
 
     const dragEnd = (e) => {
+        eventBus.emit('end'); // 发布end
         containerRef.value.removeEventListener('dragenter', dragEnter)
         containerRef.value.removeEventListener('dragover', dragOver)
         containerRef.value.removeEventListener("dragleave", dragLeave)
         containerRef.value.removeEventListener("drop", drop)
-        eventBus.emit('end') // 发布end
+         // 发布end
     }
     const dragEnter = (e) => {
         // 移入容器中改变样式, H5的拖动图标

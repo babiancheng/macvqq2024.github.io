@@ -1,9 +1,11 @@
 import { reactive } from "vue"
+import eventBus from "./events"
 
 export default function BlockDragger(focusData, lastSelectBlock, data) {
     let dragState = {
         startX: 0,
-        startY: 0
+        startY: 0,
+        dragging: false //默认不在拖拽状态
     }
     let markline = reactive({
         x: null,
@@ -19,6 +21,7 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
 
             startLeft: lastSelectBlock.value.left, // 拖拽前的位置
             startTop: lastSelectBlock.value.top,
+            dragging: false, //默认不在拖拽状态
 
             statrPos: focusData.value.focus.map(({ top, left }) => ({ top, left })),
             lines: (() => {
@@ -52,6 +55,10 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
     }
     const mousemove = (e) => {
         let { clientX: moveX, clientY: moveY } = e; // 解构赋值
+        if (!dragState.dragging) {
+            dragState.dragging = true;
+            eventBus.emit('start', dragState); // 
+        }
 
         // 计算当前元素最新的left和top, 查找线, 并显示
         // 鼠标移动后 - 鼠标移动前 + left 
@@ -96,6 +103,9 @@ export default function BlockDragger(focusData, lastSelectBlock, data) {
         document.removeEventListener('mouseup', mouseup);
         markline.x = null;
         markline.y = null;
+        if (dragState.dragging) {
+            eventBus.emit('end');
+        }
     }
     return {
         mousedown,
