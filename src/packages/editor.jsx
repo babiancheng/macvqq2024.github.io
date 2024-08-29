@@ -6,6 +6,7 @@ import { MenuDragger } from "./MenuDragger";
 import { Focus } from "./Focus";
 import BlockDragger from "./BlockDragger";
 import { useCommand } from "./useCommand";
+import { $dialog } from "@/components/Dialog";
 export default defineComponent({
     props: {
         modelValue: { type: Object }
@@ -45,8 +46,24 @@ export default defineComponent({
         let buttons = [
             { label: '撤销', render:()=><el-icon><Delete /></el-icon>, handler: () =>  commands.undo() },
             { label: '重做', render:()=><el-icon><SemiSelect /></el-icon>, handler: () =>  commands.redo() },
-            { label: '导出', render:()=><el-icon><Upload /></el-icon>, handler: () =>  {console.log("导出")} },
-            { label: '导入', render:()=><el-icon><Download /></el-icon>, handler: () =>  {console.log("导入")} },
+            { label: '导出', render:()=><el-icon><Upload /></el-icon>, handler: () =>  {
+                // Message({title:''})
+                $dialog({
+                    title:'导出JSON使用',
+                    content:JSON.stringify(data.value),
+                })
+            } },
+            { label: '导入', render:()=><el-icon><Download /></el-icon>, handler: () =>  {
+                $dialog({
+                    title:'导入JSON使用',
+                    content:'',
+                    footer:true,
+                    onConfirm(text){
+                        // data.value = JSON.parse(text) // 这样去更改无法保留历史记录
+                        commands.updateContainer(JSON.parse(text))
+                    }
+                })
+            } },
         ]
 
         return () =>
