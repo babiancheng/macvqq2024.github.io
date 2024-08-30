@@ -41,7 +41,7 @@ export default defineComponent({
         // 对获取焦点的元素进行拖拽
         const { mousedown, markline } = BlockDragger(focusData, lastSelectBlock, data)
 
-        const { commands } = useCommand(data)
+        const { commands } = useCommand(data,focusData)
 
         let buttons = [
             { label: '撤销', render:()=><el-icon><Delete /></el-icon>, handler: () =>  commands.undo() },
@@ -64,6 +64,8 @@ export default defineComponent({
                     }
                 })
             } },
+            { label: '置顶', render:()=><el-icon><SemiSelect /></el-icon>, handler: () =>  commands.placeTop()},
+            { label: '置底', render:()=><el-icon><SemiSelect /></el-icon>, handler: () =>  commands.placeBottom() },
         ]
 
         return () =>

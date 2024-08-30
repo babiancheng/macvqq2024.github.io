@@ -2,7 +2,7 @@ import deepcopy from "deepcopy";
 import eventBus from "./events";
 import { onUnmounted } from "vue";
 //gbfdgwfdfvrdgvdvcfvcv
-export function useCommand(data) {
+export function useCommand(data,focusData) {
   let state = {
     // 前进后退需要索引值
     current: -1, // 前进后退的索引值
@@ -131,6 +131,78 @@ export function useCommand(data) {
         },
       };
     },
+  });
+  registry({// 置顶操作
+    name:'placeTop',
+    pushQueue: true,
+    execute(){
+      let before=deepcopy(data.value.blocks)
+      let after=(()=>{// 置顶就是在所有的block中找到最大的
+        let {focus,unfocus}=focusData.value
+        console.log(focus,unfocus);
+        
+        let maxZIndex=unfocus.reduce((prev,block)=>{
+          return Math.max(prev,block.zIndex)
+        },-Infinity)
+
+
+
+        focus.forEach(block=>block.zIndex=maxZIndex+1) //让当前选中的比最大的+1 即可
+        return data.value.blocks
+
+
+
+      })();
+
+      return {
+        undo:()=>{
+          // 如果当前blocks 前后一致 则不会更新
+          data.value={...data.value,blocks:before}
+        },
+        redo:()=>{
+          data.value={...data.value,blocks:after}
+        }
+      }
+    }
+  });
+  registry({// 置低操作
+    name:'placeBottom',
+    pushQueue: true,
+    execute(){
+      let before=deepcopy(data.value.blocks)
+      let after=(()=>{// 置顶就是在所有的block中找到最大的
+        let {focus,unfocus}=focusData.value
+        console.log(focus,unfocus);
+        
+        let minZIndex=unfocus.reduce((prev,block)=>{
+          return Math.min(prev,block.zIndex)
+        },Infinity)-1
+        if(minZIndex<0){//这里如果是赋值则让没选中的向上 ，自己变成0
+          const dur=Math.abs(minZIndex)
+          minZIndex=0
+          unfocus.forEach(block=>block.zIndex+=dur)
+        }
+
+        // 不能直接 -1 因为index 不能出现负值 负值就看不到组件了
+
+        unfocus.forEach(block=>block.zIndex=minZIndex)//控制选中的值
+        
+        return data.value.blocks
+
+
+
+      })();
+
+      return {
+        undo:()=>{
+          // 如果当前blocks 前后一致 则不会更新
+          data.value={...data.value,blocks:before}
+        },
+        redo:()=>{
+          data.value={...data.value,blocks:after}
+        }
+      }
+    }
   });
   (() => {
     state.commandArray.forEach(
